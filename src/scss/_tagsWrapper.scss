@@ -1,0 +1,59 @@
+.tagsWrapper{
+  padding: 2rem;
+  max-width: 100%;
+  min-height: 100vh;
+  background-color: honeydew;
+  flex-grow: 1;
+  &--mainHeadline{
+    text-align: center;
+    padding-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  h4{
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  &--yearTag{
+    margin-top: 2rem;
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    
+    &__buttons{
+      margin-left: 1rem;
+      padding: 0.5rem 1rem;
+      border: 0;
+      border-radius:15px;
+      background-color: cadetblue;
+      color: white;
+      cursor: pointer;
+
+      &:hover, &:focus{
+        box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      }
+    }
+  }
+
+  &--buttons{
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+
+    &__tagsAssigned-btn{
+      cursor: pointer;
+      padding: 1rem 2rem;
+      border: 1px solid cadetblue;
+      background-color: transparent;
+    }
+    &__upload-btn{
+      cursor: pointer;
+      color: white;
+      border: 0;
+      padding: 1rem 2rem;
+      background-color: cadetblue;
+    }
+  }
+}

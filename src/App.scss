@@ -1,0 +1,11 @@
+@import './scss/tagsWrapper';
+@import './scss/uploadPage';
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.d-flex{
+  display: flex;
+}
