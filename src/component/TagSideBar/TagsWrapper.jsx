@@ -1,9 +1,20 @@
-const yearTagHandler = (e)=>{
-  console.log(e.target.innerHTML);
-}
-
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { yearData } from "../../action";
 
 const TagsWrapper = () => {
+  
+  const [dataObject, setdataObject] = useState({});
+  const imagesData = useSelector((state) => state.pictureData)
+  
+  const yearTagHandler = (e) => {
+    const tags = {
+      year: e.target.innerHTML
+    };
+    setdataObject(() => Object.assign(imagesData.images, { tags }))
+    console.log('imagesData is : ', dataObject);
+  }
+
   return (
     <aside className="tagsWrapper">
       <h3 className="tagsWrapper--mainHeadline">Assign Tags</h3>

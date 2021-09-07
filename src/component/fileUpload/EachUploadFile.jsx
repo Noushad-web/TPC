@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { picDataFun } from '../../action/index.js';
 
 const thumb = {
   display: 'inline-flex',
@@ -24,22 +26,37 @@ const img = {
 
 const EachUploadFile = ({ file }) => {
 
-  const selectImg = (e)=>{
-    
-  }
-  localStorage.clear();
-  const { preview, name, lastModified} = file;
-  // const detailsOfImage = { imgName : file.name, imgSrc : file.preview };
-  // localStorage.setItem('fileDetails', JSON.stringify(detailsOfImage));
+  const { preview, name, lastModified, size } = file; //destructuring file
+  const dispatch = useDispatch();
+  const [picData, setPicData] = useState();
 
+  const yearData = useSelector((state) => {
+    return state
+  })
+
+  useEffect(()=>{
+    console.log('dispatching function');
+    dispatch(
+      picDataFun(
+        {
+          id: lastModified,
+          name: name,
+          src: preview,
+          size: `${size / 1000}kb`,
+        }
+      )
+    );
+  }, [picData])
+
+  const selectImg = (e)=>{
+    console.log(e.target);
+    setPicData( ()=> e.target );
+  }
+  
   return (
-    <div style={thumb} id={lastModified} className="draggedItem">
+    <div onClick={selectImg} style={thumb} className="draggedItem">
       <div style={thumbInner}>
-        <img onClick={selectImg}
-          src={preview}
-          style={img}
-          alt={name}
-        />
+        <img id={lastModified} src={preview} style={img} alt={name}/>
       </div>
     </div>
   )

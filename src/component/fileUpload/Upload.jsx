@@ -18,8 +18,6 @@ const dropzone = {
   margin: 'auto'
 }
 
-
-
 export default function Previews(props) {
 
   const [files, setFiles] = useState([]);
