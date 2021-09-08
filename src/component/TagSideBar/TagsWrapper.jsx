@@ -1,18 +1,25 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { yearData } from "../../action";
 
 const TagsWrapper = () => {
-  
-  const [dataObject, setdataObject] = useState({});
-  const imagesData = useSelector((state) => state.pictureData)
-  
+    
+  const imagesData = useSelector((state) => state.pictureData);
+  let [imgData, setImgData] = useState('');
   const yearTagHandler = (e) => {
     const tags = {
       year: e.target.innerHTML
-    };
-    setdataObject(() => Object.assign(imagesData.images, { tags }))
-    console.log('imagesData is : ', dataObject);
+    };    
+    imgData =[ 
+      ...imagesData.map(element => {
+        return Object.assign(element, { tags })
+      })
+    ]
+  }
+
+  const uploadHandler = () => {
+    console.log('upload', imgData);
+    localStorage.clear();
+    localStorage.setItem('img-details', JSON.stringify(imgData));
   }
 
   return (
@@ -32,7 +39,7 @@ const TagsWrapper = () => {
 
       <div className="tagsWrapper--buttons">
         <button className="tagsWrapper--buttons__tagsAssigned-btn">Tags assigned</button>
-        <button className="tagsWrapper--buttons__upload-btn">Finsih and Upload</button>
+        <button className="tagsWrapper--buttons__upload-btn" onClick = {uploadHandler}>Finsih and Upload</button>
       </div>
 
     </aside>
