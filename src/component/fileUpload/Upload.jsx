@@ -27,10 +27,8 @@ export default function Previews(props) {
   const dispatch = useDispatch();
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
-    onDrop: acceptedFiles => {      
-      acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      }))
+    onDrop: acceptedFiles => {
+      acceptedFiles.map(file => Object.assign(file, { preview: URL.createObjectURL(file) } ));
       setFiles((prevState) =>
         [...acceptedFiles, ...prevState]
       );
