@@ -1,5 +1,4 @@
-export const picDataFun = data_array_object => {
-  // console.log('action present huzoor : ', data_array_object);
+export const picDataFun = data_array_object => {  
   return{
     type : 'PIC_DATA',
     data_array_object
@@ -14,10 +13,32 @@ export const yearTag = tag => {
   }
 }
 
-export const resembleTag = tag => {
-  console.log('resemble tags in action : ', tag)
+export const resembleTag = tag => {  
   return {
     type : 'RESEMBLE_TAG_DATA',
     tag
+  }
+}
+
+// custom assigning of images
+export const checkedImg = img => {
+  return {
+    type : 'CHECKED_IMGS',
+    img
+  }
+}
+
+export const uncheckedImg = img =>{
+  return{
+    type : 'UNCHECKED_IMGS',
+    img
+  }
+}
+
+// img data which user select to assign the tags.
+export const userSelectedImgAction = imgArray => {
+  return{
+    type : 'USER_SELECT_IMG',
+    imgArray
   }
 }

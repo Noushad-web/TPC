@@ -1,59 +1,48 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { resembleTag, yearTag } from "../../action";
+import YearTags from "../allTags/YearTags";
+import ResmebleTag from "../allTags/ResmebleTag";
 
 const TagsWrapper = () => {
   
-  const dispatch = useDispatch();
+  // taking data from the redux store
   const imagesData = useSelector((state) => state.pictureData);
-  let [imgData, setImgData] = useState('');
-  const yearTagHandler = (e) => {
-    // dispatch(yearTag(e.target.innerHTML))
-    const tags = {
-      year: e.target.innerHTML
-    };
-    imgData =[
-      ...imagesData.map(element => {
-        return Object.assign(element, { tags })
-      })
-    ]
-  }
-
-  const resembleTagHandler = (e) => {
-    const innerHTML = e.target.innerHTML;    
-    dispatch(resembleTag(innerHTML))
-  }
-
-  const uploadHandler = () => {
+  const tagData = useSelector((state)=> state.tags)
+  const [tagObject, setTagObject] = useState({});
+  let [imgData, setImgData ] = useState('');
+  
+  const uploadHandler = ()=>{
     console.log('upload', imgData);
-    localStorage.clear();
-    localStorage.setItem('img-details', JSON.stringify(imgData));
+    localStorage.clear();    
+    localStorage.setItem('img-details', JSON.stringify(imgData));    
   }
+  
+  useEffect(() => {    
+    setTagObject(prevState =>({ ...prevState, ...tagData }));
+    setImgData(()=>{
+      return[
+        ...imagesData.map(element => {
+          return Object.assign(element, { tagObject })
+        })
+      ]
+    })
+
+    return ()=>{
+      setImgData('')
+    }
+  }, [tagData])
+
 
   return (
     <aside className="tagsWrapper">
       <h3 className="tagsWrapper--mainHeadline">Assign Tags</h3>
-      
+
       <hr />
       
-      <h4>Year</h4>
-      <ul className="tagsWrapper--yearTag">
-        <li><button className="tagsWrapper--yearTag__buttons btn-normal" onClick={yearTagHandler}>2020</button></li>
-        <li><button className="tagsWrapper--yearTag__buttons btn-normal" onClick={yearTagHandler}>2019</button></li>
-        <li><button className="tagsWrapper--yearTag__buttons btn-normal" onClick={yearTagHandler}>2018</button></li>
-        <li><button className="tagsWrapper--yearTag__buttons btn-normal" onClick={yearTagHandler}>2017</button></li>
-        <li><button className="tagsWrapper--yearTag__buttons btn-normal" onClick={yearTagHandler}>2016</button></li>
-      </ul>
-      
-      <h4>Resembles</h4>
-      <ul className="tagsWrapper--yearTag">
-        <li><button className="tagsWrapper--yearTag__buttons btn-normal" onClick={resembleTagHandler}>Architecture</button></li>
-        <li><button className="tagsWrapper--yearTag__buttons btn-normal" onClick={resembleTagHandler}>Nature</button></li>
-        <li><button className="tagsWrapper--yearTag__buttons btn-normal" onClick={resembleTagHandler}>Fashion</button></li>
-        <li><button className="tagsWrapper--yearTag__buttons btn-normal" onClick={resembleTagHandler}>Health</button></li>        
-      </ul>
-
+      <YearTags/>
+      <ResmebleTag/>
+    
       <div className="tagsWrapper--buttons">
         <button className="tagsWrapper--buttons__tagsAssigned-btn">Tags assigned</button>
         <Link to='/filter'>

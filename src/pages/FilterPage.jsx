@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import searchPng from '../images/search.png';
+// import searchPng from '../images/search.png';
 
 const FilterPage = () => {
 
@@ -10,11 +10,12 @@ const FilterPage = () => {
 
   const searchFormHandler = (e) => {
     e.preventDefault();
-    const inputSearch = e.target.search;
+    const inputSearchedValue = e.target.search.value.toLowerCase();
     setFilterData(getTheData.filter(eachData => {
-      
-      if (eachData.tags.year === inputSearch.value){
-        console.log('matched');
+      const objectValue = eachData.tagObject;
+      console.log('objectValue : ', objectValue);
+      if (objectValue.year === inputSearchedValue || objectValue.resemble == inputSearchedValue ){
+        console.log('[input matched with tag in data]');
         setIsData(true)
         return eachData;
       }else{

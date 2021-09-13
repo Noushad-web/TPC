@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import EachUploadFile from './EachUploadFile';
-import { picDataFun } from '../../action';
-import { useDispatch } from 'react-redux';
+import { picDataFun } from '../../action/index';
+import { useDispatch, useSelector } from 'react-redux';
+import {checkedImg_reducer } from '../../reducers/checkedImg__reducer';
+import store from '../../store';
+import { userSelectedImgAction} from '../../action/index';
 
 const thumbsContainer = {
   display: 'flex',
@@ -35,6 +38,50 @@ export default function Previews(props) {
     }
   });
 
+  const selectedImgData = useSelector((state) => (state.checkedImg__reducer));
+  const unSelectedImgData = useSelector((state) => (state.unCheckedImg__reducer));
+  const finalImgData_to_be_assigned = useSelector((state) => state.userSelectedImg);
+
+
+  useEffect(()=>{
+    let imgDetailsArray__Object = [];
+    if(finalImgData_to_be_assigned.data !== undefined){
+      console.log('final data to be ready to assign tags : ', finalImgData_to_be_assigned.data);
+      const data = finalImgData_to_be_assigned.data;
+      console.log(data.length);
+      data.forEach((eachImg, index) => {
+        const src = eachImg.getAttribute('data-src');
+        const name = eachImg.getAttribute('data-name');
+        const id = eachImg.getAttribute('data-id');
+        const size = eachImg.getAttribute('data-size');
+        imgDetailsArray__Object[index] = { id, src, name, size: `${size / 1000} kb` };
+      });
+      dispatch(picDataFun(imgDetailsArray__Object));
+    }
+   
+  }, [selectedImgData, unSelectedImgData])  
+
+
+  useEffect(()=>{        
+    // filtering data 
+    for (let i = 0; i < unSelectedImgData.length; i++) {
+      const unSelect = unSelectedImgData[i];
+      for (let j = 0; j < selectedImgData.length; j++) {
+        const select = selectedImgData[j];
+        if(unSelect == select){
+          selectedImgData.splice(j, 1)
+        }
+      }
+    }
+    dispatch(userSelectedImgAction(selectedImgData));
+  }, [unSelectedImgData])
+
+  
+  useEffect(()=>{
+    dispatch(userSelectedImgAction(selectedImgData));
+  }, [selectedImgData])
+
+/* ------------- IMPORTANT code down here helps to prevent memory leak -----------------*/ 
   // useEffect(() => () => {
   //   console.log('revokingUrl');
   //   // Make sure to revoke the data uris to avoid memory leaks
@@ -43,22 +90,23 @@ export default function Previews(props) {
   //   });
   // }, [files]);
 
+
   useEffect(()=>{
     let imgDetailsArray__Object = [];
     const allimages = [...eachUploadFileElement.current.children];
     allimages.forEach((eachImg, index) => {
+      // console.log(eachImg.className)
       const src =  eachImg.getAttribute('data-src');
-      const name = eachImg.getAttribute('data-name');      
+      const name = eachImg.getAttribute('data-name');
       const id = eachImg.getAttribute('data-id');
-      const size = eachImg.getAttribute('data-size');     
-      console.log('render');
+      const size = eachImg.getAttribute('data-size');
       imgDetailsArray__Object[index] = { id, src, name, size: `${ size / 1000 } kb`};
     })
     
     dispatch(picDataFun(imgDetailsArray__Object));
-    
   }, [files])
-      
+  
+
   return (
     <section className="uploadContainer">
       <div className='uploadContainer--dropzone' {...getRootProps({ style: dropzone })}>
@@ -74,6 +122,10 @@ export default function Previews(props) {
           })
         }
       </aside>
+      <div className="selectedImg">
+        <h1>selected img data is here  : </h1>
+        {/* {selectedImgData} */}
+      </div>
     </section>
   )
 }
