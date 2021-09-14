@@ -40,7 +40,6 @@ export default function Previews(props) {
   const unSelectedImgData = useSelector((state) => (state.unCheckedImg__reducer));
   const finalImgData_to_be_assigned = useSelector((state) => state.userSelectedImg);
 
-  
   useEffect(()=>{
     let imgDetailsArray__Object = [];
     if(finalImgData_to_be_assigned.data !== undefined){

@@ -16,20 +16,26 @@ const TagsWrapper = () => {
   let [imgData, setImgData ] = useState('');
   const [counter, setCounter] = useState(0);
 
-  const uploadHandler = ()=>{
+  const tag_assign_handler = ()=>{
     console.log('upload', imgData);
     localStorage.setItem(counter, JSON.stringify(imgData));
     setCounter(()=> counter + 1);
     const data = finalImgData.data;
     data.forEach( eachElement => {
       eachElement.remove();
-    });    
-    dispatch(resetUserSelectedImgAction([]));    
+    });
+    dispatch(resetUserSelectedImgAction([]));
   }
 
   useEffect(()=>{
-    // console.log('final image data to be assigned from tagswrapper : ', finalImgData);
-  }, [finalImgData])
+    setImgData(() => {
+      return [
+        ...imagesData.map(element => {
+          return Object.assign(element, { tagObject })
+        })
+      ]
+    })
+  }, [tagObject])
 
   useEffect(()=>{    
     if(counter === 0){
@@ -37,18 +43,8 @@ const TagsWrapper = () => {
     }
   },[counter])
    
-  useEffect(() => {    
-    setTagObject(prevState =>({ ...prevState, ...tagData }));
-    setImgData(()=>{
-      return[
-        ...imagesData.map(element => {
-          return Object.assign(element, { tagObject })
-        })
-      ]
-    })
-    return ()=>{
-      setImgData('')
-    }
+  useEffect(() => {
+    setTagObject(prevState =>({ ...prevState, ...tagData }));    
   }, [tagData])
 
 
@@ -62,7 +58,7 @@ const TagsWrapper = () => {
       <ResmebleTag/>
     
       <div className="tagsWrapper--buttons">
-        <button className="tagsWrapper--buttons__tagsAssigned-btn" onClick={uploadHandler} >Tags assigned</button>
+        <button className="tagsWrapper--buttons__tagsAssigned-btn" onClick={tag_assign_handler} >Tags assigned</button>
         <Link to='/filter'>
           <button className="tagsWrapper--buttons__upload-btn" >Finsih and Upload</button>
         </Link>
