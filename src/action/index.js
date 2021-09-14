@@ -42,3 +42,10 @@ export const userSelectedImgAction = imgArray => {
     imgArray
   }
 }
+
+export const resetUserSelectedImgAction = nullArray => {
+  return {
+    type : 'RESET_USER_SELECTED_IMG',
+    nullArray
+  }
+}

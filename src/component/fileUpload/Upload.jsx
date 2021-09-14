@@ -3,8 +3,6 @@ import { useDropzone } from 'react-dropzone';
 import EachUploadFile from './EachUploadFile';
 import { picDataFun } from '../../action/index';
 import { useDispatch, useSelector } from 'react-redux';
-import {checkedImg_reducer } from '../../reducers/checkedImg__reducer';
-import store from '../../store';
 import { userSelectedImgAction} from '../../action/index';
 
 const thumbsContainer = {
@@ -42,13 +40,13 @@ export default function Previews(props) {
   const unSelectedImgData = useSelector((state) => (state.unCheckedImg__reducer));
   const finalImgData_to_be_assigned = useSelector((state) => state.userSelectedImg);
 
-
+  
   useEffect(()=>{
     let imgDetailsArray__Object = [];
     if(finalImgData_to_be_assigned.data !== undefined){
       console.log('final data to be ready to assign tags : ', finalImgData_to_be_assigned.data);
       const data = finalImgData_to_be_assigned.data;
-      console.log(data.length);
+      // console.log(data.length);
       data.forEach((eachImg, index) => {
         const src = eachImg.getAttribute('data-src');
         const name = eachImg.getAttribute('data-name');
@@ -59,11 +57,11 @@ export default function Previews(props) {
       dispatch(picDataFun(imgDetailsArray__Object));
     }
    
-  }, [selectedImgData, unSelectedImgData])  
+  }, [selectedImgData, unSelectedImgData, finalImgData_to_be_assigned])
 
 
-  useEffect(()=>{        
-    // filtering data 
+  useEffect(()=>{
+    // filtering data
     for (let i = 0; i < unSelectedImgData.length; i++) {
       const unSelect = unSelectedImgData[i];
       for (let j = 0; j < selectedImgData.length; j++) {

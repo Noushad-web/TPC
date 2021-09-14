@@ -10,14 +10,14 @@ const img = {
 
 const EachUploadFile = ({ file }) => {
 
-  const { preview, name, lastModified, size } = file; //destructuring file    
+  const { preview, name, lastModified, size } = file; //destructuring file
   const [imgObj_checked, setImgObj_checked] = useState([]);
   const [imgObj_unchecked, setImgObj_unchecked] = useState([]);
 
   const dispatch = useDispatch();
-  const selectImg = (e)=>{    
+  const selectImg = (e)=>{
     const targeted = e.target;
-    const parentElement = e.target.parentElement;          
+    const parentElement = e.target.parentElement;
 
     if(targeted.tagName === 'IMG'){
       const listOfClass = parentElement.className;
@@ -37,7 +37,7 @@ const EachUploadFile = ({ file }) => {
   }
   
   return (
-    <div onClick={selectImg} className="draggedItem" id={lastModified} data-id={lastModified} data-src={preview} data-name={name} data-size={size}>
+    <div onClick={selectImg} key={lastModified} className="draggedItem" id={lastModified} data-id={lastModified} data-src={preview} data-name={name} data-size={size}>
         <img id={lastModified}  src={preview} style={img} alt={name}/>
     </div>
   )
